@@ -5,10 +5,13 @@ import java.text.DecimalFormat;
 import com.google.gson.JsonObject;
 
 
-//Barbershop Quartet:
-//Base rate: £670 for the quartet in London for up to 2 x 30 minute sets within a 3 hour period
+//BarberShop Quartet:
+//25 February 2018 increase rate to 950 from 670
+//25 February 2018  only charge for travel above 25 miles
+//Base rate: £950 for the quartet in London for up to 2 x 30 minute sets within a 3 hour period
 //£0.40 x miles from central London per singer for travel expenses
-//£110 for each additional 30 minutes of performance 
+//£110 for each additional 30 minutes of performance
+//https://docs.aws.amazon.com/lambda/latest/dg/java-create-jar-pkg-maven-and-eclipse.html
 
 
 // http://docs.aws.amazon.com/lambda/latest/dg/java-handler-io-type-pojo.html
@@ -62,10 +65,9 @@ public class RequestClass {
 
 	    	String origin = "Leicester Square, London WC2H, UK";
 	    	
-	    	
 	    	final int VICTORIAN_RATE = 480;
 	    	final int CAROL_RATE = 440;
-	    	final int HV_BARBERSHOP_RATE = 670;
+	    	final int HV_BARBERSHOP_RATE = 950; //25 February 2018 increase rate to 950 from 670
 	    	final int HV_CAROL_RATE = 435;
 	    	
 	    	 if (performance.equals("victoriancarolsingershire")) {
@@ -88,16 +90,17 @@ public class RequestClass {
 	    	  	double meters = distances.getMeters();
 	    	    miles = (meters * 2) / 1609.34; // this is a round trip  - 1609.34 convert from meters to miles
 	    	    
+	    	    miles = miles -25; //25 February 2018  only charge for travel above 25 miles
+	    	    
 	    	  	//£0.40 x miles from central London per singer for travel expenses
 		    	double costpermile = 0.20d;  // this is a round trip
 		    	DecimalFormat df = new DecimalFormat("#.00"); 
-		    	String currency = "\u00a3"; 
 		    	travelcost = ((miles * costpermile) * people);
-
+    	
 		    	cost = ((miles * costpermile) * people) + baserate;
-				
-		    	expenses = currency + df.format(travelcost);
-		    	quote = currency + df.format(cost);
+		    		    	
+		    	expenses = df.format(travelcost);
+		    	quote    = df.format(cost);
 		    	
 		    	DecimalFormat dm = new DecimalFormat("#.0");
 		    	
