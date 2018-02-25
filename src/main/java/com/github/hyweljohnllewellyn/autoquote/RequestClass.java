@@ -90,14 +90,21 @@ public class RequestClass {
 	    	  	double meters = distances.getMeters();
 	    	    miles = (meters * 2) / 1609.34; // this is a round trip  - 1609.34 convert from meters to miles
 	    	    
-	    	    miles = miles -25; //25 February 2018  only charge for travel above 25 miles
+	    	    
 	    	    
 	    	  	//£0.40 x miles from central London per singer for travel expenses
 		    	double costpermile = 0.20d;  // this is a round trip
 		    	DecimalFormat df = new DecimalFormat("#.00"); 
 		    	travelcost = ((miles * costpermile) * people);
-    	
-		    	cost = ((miles * costpermile) * people) + baserate;
+    	        
+		    	cost = baserate;
+		    	
+		    	//25 February 2018  only charge for travel above 25 miles
+		    	if (miles >25) {  
+		    	    miles = miles -25; 
+		    	    cost = cost + ((miles * costpermile) * people);
+		    	    }
+		    	
 		    		    	
 		    	expenses = df.format(travelcost);
 		    	quote    = df.format(cost);
