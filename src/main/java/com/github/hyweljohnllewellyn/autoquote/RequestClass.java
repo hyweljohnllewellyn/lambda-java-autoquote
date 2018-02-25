@@ -62,6 +62,7 @@ public class RequestClass {
 	    	double travelcost;
 	    	double cost;
 	    	int baserate;
+	    	
 
 	    	String origin = "Leicester Square, London WC2H, UK";
 	    	
@@ -95,17 +96,18 @@ public class RequestClass {
 	    	  	//£0.40 x miles from central London per singer for travel expenses
 		    	double costpermile = 0.20d;  // this is a round trip
 		    	DecimalFormat df = new DecimalFormat("#.00"); 
-		    	travelcost = ((miles * costpermile) * people);
+		    	
     	        
 		    	cost = baserate;
+		    	travelcost = 0;	  
 		    	
-		    	//25 February 2018  only charge for travel above 25 miles
-		    	if (miles >25) {  
-		    	    miles = miles -25; 
+		    	//25 February 2018  only charge for travel above 50 miles (round trip)
+		    	if (miles > 50) {  
+		    		 miles = miles - 50;
 		    	    cost = cost + ((miles * costpermile) * people);
-		    	    }
+			    	travelcost = ((miles * costpermile) * people);
+		    	}
 		    	
-		    		    	
 		    	expenses = df.format(travelcost);
 		    	quote    = df.format(cost);
 		    	
